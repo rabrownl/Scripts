@@ -1,0 +1,18 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "value": "boss"
+    },
+    "adminPassword": {
+      "value": "P@55w0rd12345"
+    },
+    "domainName": {
+      "value": "rafa.lab"
+    },
+    "dnsPrefix": {
+      "value": "ad-01"
+    }
+  }
+}
