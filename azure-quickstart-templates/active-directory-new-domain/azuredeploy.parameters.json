@@ -13,6 +13,9 @@
     },
     "dnsPrefix": {
       "value": "ad-01"
+    },
+    "adVMName": {
+      "value": "GEN-NAME"
     }
   }
 }
