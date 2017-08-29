@@ -148,7 +148,7 @@
           },
           "dataDisks": [
             {
-              "diskSizeGB": "1023",
+              "diskSizeGB": 1023,
               "lun": 0,
               "createOption": "Empty"
             }
@@ -163,7 +163,7 @@
         },
         "diagnosticsProfile": {
           "bootDiagnostics": {
-            "enabled": "true",
+            "enabled": true,
             "storageUri": "[reference(resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))).primaryEndpoints.blob]"
           }
         }
