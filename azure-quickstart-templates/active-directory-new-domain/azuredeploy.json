@@ -110,7 +110,7 @@
         }
       }
     },
-     {
+    {
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('adNicName')]",
       "apiVersion": "2016-03-30",
@@ -248,5 +248,15 @@
         }
       }
     }
-  ]
-}
+  ],
+  "outputs": {
+    
+            "storageAccountName": {
+    
+                "type": "string",
+    
+                "value": "[variables('storageAccountName')]"
+    
+            }
+      }
+  }

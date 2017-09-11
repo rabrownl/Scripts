@@ -59,6 +59,13 @@
         "description": "Set of bit flags that define the join options. Default value of 3 is a combination of NETSETUP_JOIN_DOMAIN (0x00000001) & NETSETUP_ACCT_CREATE (0x00000002) i.e. will join the domain and create the account on the domain. For more information see https://msdn.microsoft.com/en-us/library/aa392154(v=vs.85).aspx"
       }
     },
+    "storageAccountName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "re-use a current sotrage account"
+      }
+    },
     "vmAdminUsername": {
       "type": "string",
       "metadata": {
@@ -73,9 +80,8 @@
     }
   },
   "variables": {
-    "storageAccountName": "[concat(uniquestring(resourceGroup().id, deployment().name))]",
     "imagePublisher": "MicrosoftSQLServer",
-    "imageOffer": "SQL2016-WS2016",
+    "imageOffer": "SQL2016SP1-WS2016",
     "ImageSku": "Enterprise",
     "apiVersion": "2015-06-15",
     "nicName": "[concat(parameters('vmName'),'Nic')]",
@@ -92,17 +98,8 @@
       "properties": {
         "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
-          "domainNameLabel": "[parameters('vmName')]"
+          "domainNameLabel": "[concat(parameters('vmName'),'2017')]"
         }
-      }
-    },
-    {
-      "apiVersion": "[variables('apiVersion')]",
-      "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('storageAccountName')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "accountType": "Standard_LRS"
       }
     },
     {
@@ -110,19 +107,13 @@
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('nicName')]",
       "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPName'))]"
-      ],
       "properties": {
         "ipConfigurations": [
           {
             "name": "ipconfig",
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPName'))]"
-              },
-              "subnet": {
+               "subnet": {
                 "id": "[variables('subnetId')]"
               }
             }
@@ -133,10 +124,9 @@
     {
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[parameters('vmName')]",
-      "apiVersion": "[variables('apiVersion')]",
+      "apiVersion":  "2017-03-30",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts',variables('storageAccountName'))]",
         "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
       ],
       "properties": {
@@ -156,8 +146,9 @@
             "version": "latest"
           },
           "osDisk": {
-            "caching": "ReadWrite",
-            "createOption": "FromImage"
+            "createOption": "FromImage",
+            "Name": "OSDisk",
+            "caching": "ReadWrite"
           },
           "dataDisks": [
             {
@@ -178,7 +169,7 @@
         "diagnosticsProfile": {
           "bootDiagnostics": {
             "enabled": "true",
-            "storageUri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net')]"
+            "storageUri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net')]"
           }
         }
       }
