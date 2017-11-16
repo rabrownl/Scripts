@@ -63,7 +63,7 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "re-use a current sotrage account"
+        "description": "re-use a current storage account"
       }
     },
     "vmAdminUsername": {
@@ -80,12 +80,13 @@
     }
   },
   "variables": {
+    "rg": "resourceGroup().name",
     "imagePublisher": "MicrosoftSQLServer",
     "imageOffer": "SQL2016SP1-WS2016",
     "ImageSku": "Enterprise",
     "apiVersion": "2015-06-15",
-    "nicName": "[concat(parameters('vmName'),'Nic')]",
-    "publicIPName": "[concat(parameters('vmName'),'Pip')]",
+    "nicName": "[concat('resourceGroup().name',parameters('vmName'),'Nic')]",
+    "publicIPName": "[concat('resourceGroup().name',parameters('vmName'),'Pip')]",
     "vnetID": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', parameters('existingVNETName'))]",
     "subnetId": "[concat(variables('vnetID'),'/subnets/', parameters('existingSubnetName'))]"
   },
@@ -98,7 +99,7 @@
       "properties": {
         "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
-          "domainNameLabel": "[concat(parameters('vmName'),'2017')]"
+          "domainNameLabel": "[concat('sealab',parameters('vmName'),uniquestring(resourceGroup().id))]"
         }
       }
     },

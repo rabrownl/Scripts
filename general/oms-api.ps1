@@ -4,7 +4,7 @@ $AlertsEnabled = "false"
 $OMSResourceGroupId = Get-AutomationVariable -Name 'OMS-Resource-Group-Name'
 $OMSWorkspaceName = Get-AutomationVariable -Name 'OMSWorkspaceName'
 
-
+blah!
 $SPNConnection = Get-AutomationConnection -Name 'AzureRunAsSPN'
 $SubscriptionID = $SPNConnection.SubscriptionId
 $TenantID = $SPNConnection.TenantID
