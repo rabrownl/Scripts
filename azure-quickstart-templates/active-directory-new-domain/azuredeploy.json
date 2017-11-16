@@ -20,12 +20,6 @@
         "description": "The FQDN of the Active Directory Domain to be created"
       }
     },
-    "dnsPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "The DNS prefix for the public IP address used by the Load Balancer"
-      }
-    },
     "adVMName": {
       "type": "string",
       "metadata": {
@@ -51,14 +45,15 @@
     "imagePublisher": "MicrosoftWindowsServer",
     "imageOffer": "windowsServer",
     "windowsOSVersion": "2016-Datacenter",
-    "virtualNetworkName": "adVNET",
+    "virtualNetworkName": "[concat(resourceGroup().name,'-VNET')]",
     "virtualNetworkAddressRange": "10.0.0.0/16",
-    "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'adsa')]",
-    "adNicName": "adNic",
+    "storageAccountName": "[concat(resourceGroup().name,uniquestring(resourceGroup().id))]",
+    "adNicName": "[concat(resourceGroup().name,'-ADnic')]",
     "adNicIPAddress": "10.0.0.4",
-    "adSubnetName": "adSubnet",
+    "adSubnetName": "[concat(resourceGroup().name,'-Subnet')]",
     "adSubnetAddressPrefix": "10.0.0.0/24",
-    "publicIPAddressName": "adPublicIP"
+    "publicIPAddressName": "[concat(resourceGroup().name,parameters('adVMName'),'-PIP')]",
+    "dnsPrefix": "[concat(resourceGroup().name,uniquestring(resourceGroup().id))]"
   },
   "resources": [
     {
@@ -80,7 +75,7 @@
       "properties": {
         "publicIPAllocationMethod": "Dynamic",
         "dnsSettings": {
-          "domainNameLabel": "[parameters('dnsPrefix')]"
+          "domainNameLabel": "[variables('dnsPrefix')]"
         }
       }
     },
@@ -167,7 +162,7 @@
           {
             "caching": "None",
             "createOption": "Empty",
-            "diskSizeGB": "1024",
+            "diskSizeGB": 1024,
             "lun": 0
           }
         ]
@@ -257,6 +252,15 @@
     
                 "value": "[variables('storageAccountName')]"
     
+            },
+            "VNET":{
+              "type": "string",
+              "value": "[variables('virtualNetworkName')]"
+            },
+
+            "Subnet":{
+              "type": "string",
+              "value": "[variables('adSubnetName')]"
             }
       }
   }

@@ -11,9 +11,6 @@
     "domainName": {
       "value": "rafa.lab"
     },
-    "dnsPrefix": {
-      "value": "ad-01"
-    },
     "adVMName": {
       "value": "GEN-NAME"
     }
